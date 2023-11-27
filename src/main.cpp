@@ -27,7 +27,7 @@ void init()
 
 	// Inititalize hardware and set up hardware state
 	ctx->mEmuContext->mStatus = context::RUNNING;
-	ctx->mEmuContext->mPC = ROM_ENTRY;
+	ctx->mEmuContext->mCpu->mPC = ROM_ENTRY;
 }
 
 int main(int argc, char **argv)

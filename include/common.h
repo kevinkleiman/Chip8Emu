@@ -15,9 +15,9 @@
 #define PRINT_HEX(X) \
 	std::cout << std::hex<< "HEX VALUE:::" << X << std::endl; 
 
-#define NO_IMPL(S)								 \
-do {												 \
+#define NO_IMPL(S) \
+do { \
 	std::cout << "ERROR:: Instruction" << S << " not yet implemented" << std::endl; \
-	exit(1) \
+	exit(1); \
 } while(0)
 

@@ -11,7 +11,7 @@ Memory::Memory()
 
 void Memory::loadFont()
 {
-	auto emuCtx = ctx->mEmuContext;
+	auto memory = ctx->mEmuContext->mMemory;
 
 	const uint8_t font[] = {
 		0xF0, 0x90, 0x90, 0x90, 0xF0,   // 0   
@@ -32,18 +32,19 @@ void Memory::loadFont()
 		0xF0, 0x80, 0xF0, 0x80, 0x80,   // F
 	};
 
-	memcpy(&emuCtx->mRam, font, sizeof(font));
+	memcpy(&memory->mRam, font, sizeof(font));
 }
 
 void Memory::loadRom()
 {
 	auto emuCtx = ctx->mEmuContext;
+	auto memory = ctx->mEmuContext->mMemory;
 
 	FILE* pRom;
 	FILE** pRomFile = &pRom;
 
 	size_t romSize;
-	size_t maxRomSize = sizeof(emuCtx->mRam) - ROM_ENTRY;
+	size_t maxRomSize = sizeof(memory->mRam) - ROM_ENTRY;
 
 	fopen_s(pRomFile, emuCtx->mRomFileName, "rb");
 
@@ -63,7 +64,7 @@ void Memory::loadRom()
 		exit(1);
 	}
 
-	if (!fread(&emuCtx->mRam[ROM_ENTRY], romSize, 1, pRom))
+	if (!fread(&memory->mRam[ROM_ENTRY], romSize, 1, pRom))
 	{
 		DEBUG_LOG("Could not read ROM file into memory");
 		exit(1);

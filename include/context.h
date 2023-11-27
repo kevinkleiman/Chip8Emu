@@ -38,15 +38,6 @@ namespace context {
 
 		std::shared_ptr<bool> mLcd;
 
-		uint16_t mI;
-		uint16_t mPC = 0x200;
-		uint16_t mOpcode;
-		uint16_t mStack[12];
-		uint16_t mRam[4096];						// 4K of memory
-		uint8_t mVRegisters[16];
-		
-		uint8_t mDelaytimer;					// Decrements at 60hz when greater than 0
-		uint8_t mSoundTimer;					// Decrements at 60hz and plays tone when greater than 0
 
 		const char* mRomFileName;
 		bool mKeypad[16];						// Hex keypad 0x0-0xF

@@ -13,9 +13,11 @@ CPU::CPU()
 
 void CPU::fetch()
 {
-	auto emuCtx = ctx->mEmuContext;
+	// Using two variables for readability
+	auto cpu = ctx->mEmuContext->mCpu;
+	auto memory = ctx->mEmuContext->mMemory;
 
-	emuCtx->mOpcode = (emuCtx->mRam[emuCtx->mPC] << 8) | emuCtx->mRam[emuCtx->mPC + 1];
+	cpu->mOpcode = (memory->mRam[cpu->mPC] << 8) | memory->mRam[cpu->mPC + 1];
 }
 
 void CPU::cycle()
@@ -79,56 +81,68 @@ void CPU::pollInput()
 
 void CPU::emulateInstr()
 {
-	auto emuCtx = ctx->mEmuContext;
+	auto cpu = ctx->mEmuContext->mCpu;
 
 	// Fetch
 	fetch();
 
-	PRINT_HEX(emuCtx->mOpcode);
+	PRINT_HEX(cpu->mOpcode);
 	
 	// Decode and execute
-	std::invoke(emuCtx->mCpu->Chip8Instr[0x1], emuCtx->mCpu);
+	std::invoke(cpu->Chip8Instr[0x1], cpu);
 
 	// Increment PC by two for 2 byte fetch
-	emuCtx->mPC += 2;
+	cpu->mPC += 2;
+}
+
+/*
+	Opcode functions implementations referenced in 
+	opcode function pointer table
+
+	These functions act as handlers for all opcodes 0-F
+*/
+
+void CPU::_0x0()
+{
+
 }
 
 void CPU::_0x1()
 {
-	DEBUG_LOG("0x1");
+	NO_IMPL("0x1");
 }
 
 void CPU::_0x2()
 {
-	DEBUG_LOG("0x2");
+	NO_IMPL("0x2");
 }
 
 void CPU::_0x3()
 {
-	DEBUG_LOG("0x2");
+	NO_IMPL("0x2");
 }
 
 void CPU::_0x4()
 {
-	DEBUG_LOG("0x2");
+	NO_IMPL("0x2");
 }
 
 void CPU::_0x5()
 {
-	DEBUG_LOG("0x2");
+	NO_IMPL("0x2");
 }
 
 void CPU::_0x6()
 {
-	DEBUG_LOG("0x2");
+	NO_IMPL("0x2");
 }
 
 void CPU::_0x7()
 {
-	DEBUG_LOG("0x2");
+	NO_IMPL("0x2");
 }
 
 void CPU::_0x8()
 {
-	DEBUG_LOG("0x2");
+	NO_IMPL("0x2");
 }
