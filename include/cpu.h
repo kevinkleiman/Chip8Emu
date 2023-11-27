@@ -2,8 +2,22 @@
 
 class CPU { 
 
+	/*
+
+	This is a table (array) which holds pointers
+	to functions that handle opcodes and their
+	respective variations. It is faster than a 
+	switch statement and allows for better
+	readability.
+
+	*/
 	void(CPU::* Chip8Instr[16])() = {
-		nullptr, &CPU::_0x1, &CPU::_0x2
+		&CPU::_0x0, &CPU::_0x1, &CPU::_0x2,
+		&CPU::_0x3, &CPU::_0x4, &CPU::_0x5,
+		&CPU::_0x6, &CPU::_0x7, &CPU::_0x8,
+		&CPU::_0x9, &CPU::_0xA, &CPU::_0xB,
+		&CPU::_0xC, &CPU::_0xD, &CPU::_0xE,
+		&CPU::_0xF
 	};
 
 public:
@@ -35,4 +49,11 @@ public:
 	void _0x6();
 	void _0x7();
 	void _0x8();
+	void _0x9();
+	void _0xA();
+	void _0xB();
+	void _0xC();
+	void _0xD();
+	void _0xE();
+	void _0xF();
 };

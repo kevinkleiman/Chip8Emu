@@ -13,11 +13,11 @@
 	std::cout << "EMU LOG:::" << S << std::endl; 
 
 #define PRINT_HEX(X) \
-	std::cout << std::hex<< "HEX VALUE:::" << X << std::endl; 
+	std::cout << std::hex<< "HEX VALUE = " << X << std::endl; 
 
 #define NO_IMPL(S) \
 do { \
-	std::cout << "ERROR:: Instruction" << S << " not yet implemented" << std::endl; \
+	std::cout << "ERROR:: Instruction " << S << " not yet implemented" << std::endl; \
 	exit(1); \
 } while(0)
 

@@ -96,10 +96,12 @@ void CPU::emulateInstr()
 }
 
 /*
-	Opcode functions implementations referenced in 
-	opcode function pointer table
 
-	These functions act as handlers for all opcodes 0-F
+Opcode functions implementations referenced in 
+opcode function pointer table
+
+These functions act as handlers for all opcodes 0-F
+
 */
 
 void CPU::_0x0()
@@ -143,6 +145,41 @@ void CPU::_0x7()
 }
 
 void CPU::_0x8()
+{
+	NO_IMPL("0x2");
+}
+
+void CPU::_0x9()
+{
+	NO_IMPL("0x2");
+}
+
+void CPU::_0xA()
+{
+	NO_IMPL("0x2");
+}
+
+void CPU::_0xB()
+{
+	NO_IMPL("0x2");
+}
+
+void CPU::_0xC()
+{
+	NO_IMPL("0x2");
+}
+
+void CPU::_0xD()
+{
+	NO_IMPL("0x2");
+}
+
+void CPU::_0xE()
+{
+	NO_IMPL("0x2");
+}
+
+void CPU::_0xF()
 {
 	NO_IMPL("0x2");
 }
