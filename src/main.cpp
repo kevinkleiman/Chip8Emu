@@ -1,9 +1,9 @@
 #include <iostream>
-#include "context.h"
-#include "display.h"
-#include "common.h"
-#include "cpu.h"
-#include "memory.h"
+#include "../include/context.h"
+#include "../include/display.h"
+#include "../include/common.h"
+#include "../include/cpu.h"
+#include "../include/memory.h"
 
 std::shared_ptr<context::Context_t> ctx = std::make_shared<context::Context_t>();
 

@@ -132,20 +132,20 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="cpu.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="display.cpp" />
-    <ClCompile Include="memory.cpp" />
+    <ClCompile Include="src\cpu.cpp" />
+    <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\display.cpp" />
+    <ClCompile Include="src\memory.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="common.h" />
-    <ClInclude Include="cpu.h" />
-    <ClInclude Include="display.h" />
-    <ClInclude Include="context.h" />
-    <ClInclude Include="memory.h" />
+    <ClInclude Include="include\common.h" />
+    <ClInclude Include="include\cpu.h" />
+    <ClInclude Include="include\display.h" />
+    <ClInclude Include="include\context.h" />
+    <ClInclude Include="include\memory.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="IBMLogo.ch8" />
+    <None Include="roms\IBMLogo.ch8" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

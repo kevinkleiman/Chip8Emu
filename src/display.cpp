@@ -1,7 +1,7 @@
 #include <SDL.h>
 #include <iostream>
-#include "context.h"
-#include "common.h"
+#include "../include/context.h"
+#include "../include/common.h"
 
 #undef main
 

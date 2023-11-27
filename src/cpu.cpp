@@ -1,10 +1,10 @@
 
 #include <iostream>
 #include <stdint.h>
-#include "cpu.h"
-#include "display.h"
-#include "context.h"
-#include "common.h"
+#include "../include/cpu.h"
+#include "../include/display.h"
+#include "../include/context.h"
+#include "../include/common.h"
 
 
 CPU::CPU()

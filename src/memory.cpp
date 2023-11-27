@@ -1,8 +1,8 @@
 #include <iostream>
 #include <stdint.h>
-#include "memory.h"
-#include "context.h"
-#include "common.h"
+#include "../include/memory.h"
+#include "../include/context.h"
+#include "../include/common.h"
 
 
 Memory::Memory()
