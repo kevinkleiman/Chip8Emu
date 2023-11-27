@@ -24,6 +24,25 @@ public:
 	// Constructor
 	CPU();
 
+	union Instr_t {
+		struct {
+			unsigned int opcode : 4;
+			unsigned int x : 4;
+			unsigned int y : 4;
+			unsigned int n : 4;
+		};
+		struct {
+			unsigned int opcode : 4;
+			unsigned int nnn : 12;
+		};
+		struct {
+			unsigned int opcode : 4;
+			unsigned int x : 4;
+			unsigned int kk : 8;
+		};
+		uint16_t raw;
+	} mInstr;
+
 	// CPU hardware/registers
 	uint16_t mI;
 	uint16_t mPC = 0x200;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <bitset>
 
 #define FOREGROUND_LAYER 0
 #define BACKGROUND_LAYER 1
@@ -14,6 +15,9 @@
 
 #define PRINT_HEX(X) \
 	std::cout << std::hex<< "HEX VALUE = " << X << std::endl; 
+
+#define PRINT_BIN(X) \
+	std::cout << "BINARY VALUE = " << std::bitset<8>(X) << std::endl; 
 
 #define NO_IMPL(S) \
 do { \
