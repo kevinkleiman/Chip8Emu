@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <stdint.h>
 #include "../include/cpu.h"
@@ -11,26 +10,25 @@ CPU::CPU()
 {
 }
 
-void CPU::fetch()
+void CPU::Fetch()
 {
 	// Using two variables for readability
-	auto cpu = ctx->mEmuContext->mCpu;
 	auto memory = ctx->mEmuContext->mMemory;
 
-	cpu->mInstr.raw = (memory->mRam[cpu->mPC] << 8) | memory->mRam[cpu->mPC + 1];
+	this->mInstr.raw = (memory->mRam[this->mPC] << 8) | memory->mRam[this->mPC + 1];
 }
 
-void CPU::cycle()
+void CPU::Cycle()
 {
 	auto emuCtx = ctx->mEmuContext;
 
 	while (emuCtx->mStatus != context::QUIT)
 	{
-		emuCtx->mCpu->pollInput();
+		this->PollInput();
 
 		if (emuCtx->mStatus == context::PAUSED) continue;
 
-		emulateInstr();
+		this->EmulateInstr();
 
 		// Updates SDL display, not Chip8 display render
 		display::updateDisplay();
@@ -39,7 +37,7 @@ void CPU::cycle()
 	}
 }
 
-void CPU::pollInput()
+void CPU::PollInput()
 {
 	auto emuCtx = ctx->mEmuContext;
 
@@ -81,106 +79,96 @@ void CPU::pollInput()
 	}
 }
 
-void CPU::emulateInstr()
+void CPU::EmulateInstr()
 {
-	auto cpu = ctx->mEmuContext->mCpu;
-
 	// Fetch
-	fetch();
+	this->Fetch();
 
 	// Decode and execute
-	std::invoke(cpu->Chip8Instr[0x0], cpu);
+	std::invoke(this->Chip8Instr[0x0], this);
 
 	// Increment PC by two for 2 byte fetch
-	cpu->mPC += 2;
+	this->mPC += 2;
 }
-
-/*
-
-Opcode functions implementations referenced in 
-opcode function pointer table
-
-These functions act as handlers for all opcodes 0-F
-
-*/
 
 void CPU::_0x0()
 {
 	PRINT_HEX(mInstr.raw);
-	PRINT_HEX(mInstr.y);
+	PRINT_HEX(mInstr.opcode);
+	PRINT_HEX(mInstr.nnn);
 }
 
 void CPU::_0x1()
 {
-	NO_IMPL(this->mOpcode);
+	NO_IMPL(this->mInstr.raw);
 }
 
 void CPU::_0x2()
 {
-	NO_IMPL(this->mOpcode);
+	NO_IMPL(this->mInstr.raw);
 }
 
 void CPU::_0x3()
 {
-	NO_IMPL(this->mOpcode);
+	NO_IMPL(this->mInstr.raw);
 }
 
 void CPU::_0x4()
 {
-	NO_IMPL(this->mOpcode);
+	NO_IMPL(this->mInstr.raw);
 }
 
 void CPU::_0x5()
 {
-	NO_IMPL(this->mOpcode);
+	NO_IMPL(this->mInstr.raw);
 }
 
 void CPU::_0x6()
 {
-	NO_IMPL(this->mOpcode);
+	NO_IMPL(this->mInstr.raw);
 }
 
 void CPU::_0x7()
 {
-	NO_IMPL(this->mOpcode);
+	NO_IMPL(this->mInstr.raw);
 }
 
 void CPU::_0x8()
 {
-	NO_IMPL(this->mOpcode);
+	NO_IMPL(this->mInstr.raw);
 }
 
 void CPU::_0x9()
 {
-	NO_IMPL(this->mOpcode);
+	NO_IMPL(this->mInstr.raw);
 }
 
 void CPU::_0xA()
 {
-	NO_IMPL(this->mOpcode);
+	NO_IMPL(this->mInstr.raw);
 }
 
 void CPU::_0xB()
 {
-	NO_IMPL(this->mOpcode);
+	NO_IMPL(this->mInstr.raw);
 }
 
 void CPU::_0xC()
 {
-	NO_IMPL(this->mOpcode);
+	NO_IMPL(this->mInstr.raw);
 }
 
 void CPU::_0xD()
 {
-	NO_IMPL(this->mOpcode);
+	NO_IMPL(this->mInstr.raw);
 }
 
 void CPU::_0xE()
 {
-	NO_IMPL(this->mOpcode);
+	NO_IMPL(this->mInstr.raw);
 }
 
 void CPU::_0xF()
 {
-	NO_IMPL(this->mOpcode);
+	NO_IMPL(this->mInstr.raw);
 }

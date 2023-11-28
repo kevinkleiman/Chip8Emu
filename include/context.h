@@ -8,11 +8,11 @@
 
 namespace context {
 
-	typedef enum {
+	typedef enum EmuStatus_t {
 		QUIT,
 		RUNNING,
 		PAUSED
-	} EmuStatus_t;
+	} EmuStatus;
 
 	
 	// Singleton for managing display state
@@ -25,7 +25,7 @@ namespace context {
 
 		SDL_Window* mWindow;
 		SDL_Renderer* mRenderer;
-	} DisplayContext_t;
+	} DisplayContext;
 
 	// Singleton for managing emulator state
 	typedef struct EmuContext_t {
@@ -42,14 +42,14 @@ namespace context {
 		const char* mRomFileName;
 		bool mKeypad[16];						// Hex keypad 0x0-0xF
 
-	} EmuContext_t;
+	} EmuContext;
 
 	// Singleton for managing global state
-	typedef struct Context_t {
+	typedef struct ContextSingleton_t {
 		std::shared_ptr<DisplayContext_t> mDisplayContext;
 		std::shared_ptr<EmuContext_t> mEmuContext;
-	} Context_t;
+	} ContextSingleton;
 	
 }
 
-extern std::shared_ptr<context::Context_t> ctx;
+extern std::shared_ptr<context::ContextSingleton_t> ctx;

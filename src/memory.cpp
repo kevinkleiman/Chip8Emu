@@ -9,7 +9,7 @@ Memory::Memory()
 {
 }
 
-void Memory::loadFont()
+void Memory::LoadFont()
 {
 	auto memory = ctx->mEmuContext->mMemory;
 
@@ -35,7 +35,7 @@ void Memory::loadFont()
 	memcpy(&memory->mRam, font, sizeof(font));
 }
 
-void Memory::loadRom()
+void Memory::LoadRom()
 {
 	auto emuCtx = ctx->mEmuContext;
 	auto memory = ctx->mEmuContext->mMemory;

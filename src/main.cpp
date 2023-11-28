@@ -5,7 +5,8 @@
 #include "../include/cpu.h"
 #include "../include/memory.h"
 
-std::shared_ptr<context::Context_t> ctx = std::make_shared<context::Context_t>();
+
+std::shared_ptr<context::ContextSingleton_t> ctx = std::make_shared<context::ContextSingleton_t>();
 
 // Parses args (ex. width, height) from CLI
 void configFromArgs(int argc, char** argv)
@@ -17,7 +18,6 @@ void configFromArgs(int argc, char** argv)
 void init()
 {
     // Initialize context
-    ctx = std::make_shared<context::Context_t>();
     ctx->mDisplayContext = std::make_shared<context::DisplayContext_t>();
     ctx->mEmuContext = std::make_shared<context::EmuContext_t>();
 
@@ -42,11 +42,11 @@ int main(int argc, char **argv)
     if (!display::init()) exit(EXIT_FAILURE);
 
     // Load font and ROM into memory
-    ctx->mEmuContext->mMemory->loadFont();
-    ctx->mEmuContext->mMemory->loadRom();
+    ctx->mEmuContext->mMemory->LoadFont();
+    ctx->mEmuContext->mMemory->LoadRom();
 
     // Start CPU cycle
-	ctx->mEmuContext->mCpu->cycle();
+	ctx->mEmuContext->mCpu->Cycle();
 
     // Cleanup and destroy SDL windows
     display::cleanup();
