@@ -5,8 +5,8 @@
 #include "../include/cpu.h"
 #include "../include/memory.h"
 
-
-std::shared_ptr<context::ContextSingleton_t> ctx = std::make_shared<context::ContextSingleton_t>();
+// Initialize extern context defined in context.h
+std::unique_ptr<context::ContextSingleton_t> ctx = std::make_unique<context::ContextSingleton_t>();
 
 // Parses args (ex. width, height) from CLI
 void configFromArgs(int argc, char** argv)

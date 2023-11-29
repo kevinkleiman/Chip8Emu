@@ -36,11 +36,9 @@ namespace context {
 		std::shared_ptr<CPU> mCpu;
 		std::shared_ptr<Memory> mMemory;
 
-		std::shared_ptr<bool> mLcd;
-
-
 		const char* mRomFileName;
 		bool mKeypad[16];						// Hex keypad 0x0-0xF
+		bool mLcd[64 * 32] = { 0 };
 
 	} EmuContext;
 
@@ -52,4 +50,4 @@ namespace context {
 	
 }
 
-extern std::shared_ptr<context::ContextSingleton_t> ctx;
+extern std::unique_ptr<context::ContextSingleton_t> ctx;

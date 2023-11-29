@@ -5,10 +5,6 @@
 #include "../include/common.h"
 
 
-Memory::Memory()
-{
-}
-
 void Memory::LoadFont()
 {
 	auto memory = ctx->mEmuContext->mMemory;

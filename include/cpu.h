@@ -1,4 +1,5 @@
 #pragma once
+#include "common.h"
 
 class CPU { 
 
@@ -23,7 +24,7 @@ private:
 
 public:
 	// Constructor
-	CPU();
+	CPU() {}
 
 	/*
 	
@@ -68,7 +69,8 @@ public:
 
 	// CPU hardware/registers
 	uint16_t mI;
-	uint16_t mPC = 0x200;
+	uint16_t mPC = ROM_ENTRY;
+	uint8_t mSP;
 	uint8_t mVRegisters[16];
 	
 	// Timers

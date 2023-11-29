@@ -6,16 +6,12 @@
 #include "../include/common.h"
 
 
-CPU::CPU()
-{
-}
-
 void CPU::Fetch()
 {
 	// Using two variables for readability
 	auto memory = ctx->mEmuContext->mMemory;
 
-	this->mInstr.raw = (memory->mRam[this->mPC] << 8) | memory->mRam[this->mPC + 1];
+	mInstr.raw = (memory->mRam[mPC] << 8) | memory->mRam[mPC + 1];
 }
 
 void CPU::Cycle()
@@ -24,16 +20,14 @@ void CPU::Cycle()
 
 	while (emuCtx->mStatus != context::QUIT)
 	{
-		this->PollInput();
+		PollInput();
 
 		if (emuCtx->mStatus == context::PAUSED) continue;
 
-		this->EmulateInstr();
+		EmulateInstr();
 
 		// Updates SDL display, not Chip8 display render
 		display::updateDisplay();
-
-		break;
 	}
 }
 
@@ -45,17 +39,25 @@ void CPU::PollInput()
 
 	while (SDL_PollEvent(&event))
 	{
-		switch (event.type) {
+		switch (event.type) 
+		{
 			case SDL_QUIT:
+			{
 				emuCtx->mStatus = context::QUIT;
-
-				return;
 			
+				return;
+			}
 			case SDL_KEYDOWN:
-				switch (event.key.keysym.sym) {
+			{
+				// Get keypad input
+				switch (event.key.keysym.sym) 
+				{
 					case SDLK_ESCAPE:
+					{
 						emuCtx->mStatus = context::QUIT;
+					}
 					case SDLK_SPACE:
+					{
 						if (emuCtx->mStatus == context::RUNNING)
 						{
 							emuCtx->mStatus = context::PAUSED;
@@ -68,13 +70,18 @@ void CPU::PollInput()
 						}
 
 						return;
-					default:
+					}
+				default:
 						break;
 				}
-				break;
+				// End keypad input
 
-		case SDL_KEYUP:
-			break;
+				break;
+			}
+			case SDL_KEYUP:
+			{
+				break;
+			}
 		}
 	}
 }
@@ -82,65 +89,131 @@ void CPU::PollInput()
 void CPU::EmulateInstr()
 {
 	// Fetch
-	this->Fetch();
+	Fetch();
 
+	PRINT_HEX(mInstr.raw);
 	// Decode and execute
-	std::invoke(this->Chip8Instr[0x0], this);
-
-	// Increment PC by two for 2 byte fetch
-	this->mPC += 2;
+	std::invoke(this->Chip8Instr[mInstr.opcode], this);
 }
 
 void CPU::_0x0()
 {
-	PRINT_HEX(mInstr.raw);
-	PRINT_HEX(mInstr.opcode);
-	PRINT_HEX(mInstr.nnn);
+	auto emuCtx = ctx->mEmuContext;
+
+	switch (mInstr.n) 
+	{
+		case 0x0:
+		{
+			memset(&emuCtx->mLcd, 0, sizeof(emuCtx->mLcd));
+			mPC += 2;
+			break;
+		}
+		case 0xE:
+		{
+			mPC = emuCtx->mMemory->mStack[mSP];
+			--mSP;
+			mPC += 2;
+			break;
+		}
+	}
 }
 
 void CPU::_0x1()
 {
-	NO_IMPL(this->mInstr.raw);
+	mPC = mInstr.nnn;
 }
 
 void CPU::_0x2()
 {
-	NO_IMPL(this->mInstr.raw);
+	auto memory = ctx->mEmuContext->mMemory;
+
+	++mSP;
+	memory->mStack[mSP] = mPC;
+
+	mPC = mInstr.nnn;
 }
 
 void CPU::_0x3()
 {
-	NO_IMPL(this->mInstr.raw);
+	if (mVRegisters[mInstr.x] == mInstr.kk)
+	{
+		mPC += 2;
+	}
 }
 
 void CPU::_0x4()
 {
-	NO_IMPL(this->mInstr.raw);
+	if (mVRegisters[mInstr.x] != mInstr.kk)
+	{
+		mPC += 2;
+	}
 }
 
 void CPU::_0x5()
 {
-	NO_IMPL(this->mInstr.raw);
+	if (mVRegisters[mInstr.x] != mVRegisters[mInstr.y])
+	{
+		mPC += 2;
+	}
 }
 
 void CPU::_0x6()
 {
-	NO_IMPL(this->mInstr.raw);
+	mVRegisters[mInstr.x] = mInstr.kk;
+	mPC += 2;
 }
 
 void CPU::_0x7()
 {
-	NO_IMPL(this->mInstr.raw);
+	mVRegisters[mInstr.x] += mInstr.kk;
+	mPC += 2;
 }
 
 void CPU::_0x8()
 {
-	NO_IMPL(this->mInstr.raw);
+	switch (mInstr.n)
+	{
+		case 0x0:
+		{
+			mVRegisters[mInstr.x] = mVRegisters[mInstr.y];
+			mPC += 2;
+			break;
+		}
+		case 0x1:
+		{
+			mVRegisters[mInstr.x] |= mVRegisters[mInstr.y];
+			mPC += 2;
+			break;
+		}
+		case 0x2:
+		{
+			mVRegisters[mInstr.x] &= mVRegisters[mInstr.y];
+			mPC += 2;
+			break;
+		}
+		case 0x3:
+		{
+			mVRegisters[mInstr.x] ^= mVRegisters[mInstr.y];
+			mPC += 2;
+			break;
+		}
+		case 0x4:
+		{
+			unsigned int sum = mVRegisters[mInstr.x] + mVRegisters[mInstr.y];
+
+			if (sum > 255)
+			{
+				mVRegisters[0xF] = 0x1;
+			}
+			mPC += 2;
+			break;
+		}
+	}
 }
 
 void CPU::_0x9()
 {
-	NO_IMPL(this->mInstr.raw);
+	NO_IMPL(mInstr.raw);
 }
 
 void CPU::_0xA()
