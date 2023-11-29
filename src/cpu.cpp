@@ -199,12 +199,78 @@ void CPU::_0x8()
 		}
 		case 0x4:
 		{
-			unsigned int sum = mVRegisters[mInstr.x] + mVRegisters[mInstr.y];
+			uint16_t sum = mVRegisters[mInstr.x] + mVRegisters[mInstr.y];
 
 			if (sum > 255)
 			{
 				mVRegisters[0xF] = 0x1;
 			}
+
+			mVRegisters[mInstr.x] = sum & 0xFF;
+			mPC += 2;
+			break;
+		}
+		case 0x5:
+		{
+			uint8_t diff = mVRegisters[mInstr.x] - mVRegisters[mInstr.y];
+
+			if (mVRegisters[mInstr.x] > mVRegisters[mInstr.y])
+			{
+				mVRegisters[0xF] = 0x1;
+			}
+			else
+			{
+				mVRegisters[0xF] = 0x0;
+			}
+
+			mVRegisters[mInstr.x] = diff;
+			mPC += 2;
+			break;
+		}
+		case 0x6:
+		{
+			if ((mVRegisters[mInstr.x] & 0b1) == 0x1)
+			{
+				mVRegisters[0xF] = 0x1;
+			}
+			else
+			{
+				mVRegisters[0xF] = 0x0;
+			}
+
+			mVRegisters[mInstr.x] = mVRegisters[mInstr.x] / 2;
+			mPC += 2;
+			break;
+		}
+		case 0x7:
+		{
+			uint8_t diff = mVRegisters[mInstr.y] - mVRegisters[mInstr.x];
+
+			if (mVRegisters[mInstr.y] > mVRegisters[mInstr.x])
+			{
+				mVRegisters[0xF] = 0x1;
+			}
+			else
+			{
+				mVRegisters[0xF] = 0x0;
+			}
+
+			mVRegisters[mInstr.x] = diff;
+			mPC += 2;
+			break;
+		}
+		case 0xE:
+		{
+			if ((mVRegisters[mInstr.x] & 0x80) == 0x1)
+			{
+				mVRegisters[0xF] = 0x1;
+			}
+			else
+			{
+				mVRegisters[0xF] = 0x0;
+			}
+
+			mVRegisters[mInstr.x] *= 2;
 			mPC += 2;
 			break;
 		}
