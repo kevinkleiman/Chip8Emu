@@ -38,7 +38,6 @@ namespace context {
 
 		const char* mRomFileName;
 		bool mKeypad[16];						// Hex keypad 0x0-0xF
-		bool mLcd[64 * 32] = { false };
 
 	} EmuContext;
 

@@ -24,6 +24,7 @@ void CPU::Cycle()
 	while (emuCtx->mStatus != context::QUIT)
 	{
 		PollInput();
+		// SDL_Delay(100);
 
 		if (emuCtx->mStatus == context::PAUSED) continue;
 
@@ -102,19 +103,19 @@ void CPU::EmulateInstr()
 
 void CPU::_0x0()
 {
-	auto emuCtx = ctx->mEmuContext;
+	auto memory = ctx->mEmuContext->mMemory;
 
 	switch (mInstr.n) 
 	{
 		case 0x0:
 		{
-			memset(&emuCtx->mLcd, 0, sizeof(emuCtx->mLcd));
+			memset(&memory->mPixelBuffer, 0, sizeof(memory->mPixelBuffer));
 			mPC += 2;
 			break;
 		}
 		case 0xE:
 		{
-			mPC = emuCtx->mMemory->mStack[mSP];
+			mPC = memory->mStack[mSP];
 			--mSP;
 			mPC += 2;
 			break;
@@ -310,12 +311,34 @@ void CPU::_0xB()
 
 void CPU::_0xC()
 {
-	NO_IMPL(this->mInstr.raw);
 }
 
 void CPU::_0xD()
 {
-	NO_IMPL(this->mInstr.raw);
+	auto memory = ctx->mEmuContext->mMemory;
+	
+	
+	for (int i = 0; i < mInstr.n; ++i)
+	{
+		uint32_t sprite = memory->mRam[mI + i];
+		int32_t row = (mVRegisters[mInstr.y] + i) % 32;
+
+		for (int iBit = 0; iBit < 8; ++iBit)
+		{
+			uint32_t b = (sprite & 0x80) >> 7;
+			uint32_t col = (mVRegisters[mInstr.x] + iBit) % 64;
+			uint32_t pixelOffset = row * 64 + col;
+
+			if (b == 1)
+			{
+				mVRegisters[0xF] = (memory->mPixelBuffer[pixelOffset]) ? 0x1 : 0x0;
+				memory->mPixelBuffer[pixelOffset] = true;
+			}
+
+			sprite <<= 1;
+		}
+	}
+	mPC += 2;
 }
 
 void CPU::_0xE()
