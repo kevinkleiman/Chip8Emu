@@ -52,22 +52,27 @@ namespace display {
 
 		setColor(255, 255, 255, 255);
 
+		// Initialize pixel with w, h being set to scale (i.e scaling the pixels)
 		SDL_Rect rect;
 		rect.w = RESOLUTION_SCALE;
 		rect.h = RESOLUTION_SCALE;
 
 		unsigned int x, y = 0;
 
+		// Loop through each pixel in mLcd[]
 		for (int i = 0; i < 2048; i++)
 		{
+			// Calculate x and y using some fancy math...
+			// Someone please tell me if this is stupid...
 			x = (i % RESOLUTION_WIDTH) * RESOLUTION_SCALE;
 			if ((i % RESOLUTION_WIDTH == 0) && (i != 0)) y += RESOLUTION_SCALE;
 
+			// If the pixel is on (true) then set the scaled pixel to x, y
 			if (ctx->mEmuContext->mLcd[i] == true) {
-
 				rect.x = x;
 				rect.y = y;
 
+				// Finally, render pixel
 				SDL_RenderFillRect(displayState->mRenderer, &rect);
 			}
 		}
