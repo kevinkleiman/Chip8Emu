@@ -7,6 +7,7 @@ namespace display {
 	bool init();
 
 	void updateDisplay();
-	void setFBColor(uint32_t rgba, int layer);
+	unsigned int fastCeil(unsigned int x, unsigned int y);
+	void setColor(int r, int g, int b, int a);
 	void cleanup();
 }

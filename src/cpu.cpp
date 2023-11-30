@@ -1,5 +1,6 @@
 #include <iostream>
 #include <stdint.h>
+#include <ctime>
 #include "../include/cpu.h"
 #include "../include/display.h"
 #include "../include/context.h"
@@ -18,8 +19,12 @@ void CPU::Cycle()
 {
 	auto emuCtx = ctx->mEmuContext;
 
+	uint32_t deltaTime = 0;
+
 	while (emuCtx->mStatus != context::QUIT)
 	{
+		display::updateDisplay();
+		continue;
 		PollInput();
 
 		if (emuCtx->mStatus == context::PAUSED) continue;
@@ -27,7 +32,7 @@ void CPU::Cycle()
 		EmulateInstr();
 
 		// Updates SDL display, not Chip8 display render
-		display::updateDisplay();
+
 	}
 }
 
@@ -139,6 +144,8 @@ void CPU::_0x3()
 	{
 		mPC += 2;
 	}
+
+	mPC += 2;
 }
 
 void CPU::_0x4()
@@ -147,6 +154,8 @@ void CPU::_0x4()
 	{
 		mPC += 2;
 	}
+
+	mPC += 2;
 }
 
 void CPU::_0x5()
@@ -155,6 +164,8 @@ void CPU::_0x5()
 	{
 		mPC += 2;
 	}
+
+	mPC += 2;
 }
 
 void CPU::_0x6()
@@ -279,17 +290,23 @@ void CPU::_0x8()
 
 void CPU::_0x9()
 {
-	NO_IMPL(mInstr.raw);
+	if (mVRegisters[mInstr.x] != mVRegisters[mInstr.y])
+	{
+		mPC += 2;
+	}
+
+	mPC += 2;
 }
 
 void CPU::_0xA()
 {
-	NO_IMPL(this->mInstr.raw);
+	mI = mInstr.nnn;
+	mPC += 2;
 }
 
 void CPU::_0xB()
 {
-	NO_IMPL(this->mInstr.raw);
+	mPC = mInstr.nnn + mVRegisters[0x0];
 }
 
 void CPU::_0xC()

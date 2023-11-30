@@ -17,8 +17,8 @@ namespace context {
 	
 	// Singleton for managing display state
 	typedef struct DisplayContext_t {
-		uint32_t mWindowWidth = 920;
-		uint32_t mWindowHeight = 460;
+		uint32_t mWindowWidth = 640;
+		uint32_t mWindowHeight = 320;
 
 		uint32_t mForegroundColor = 0xFFFFFFFF;	// WHITE RGBA888
 		uint32_t mBackgroundColor = 0x000000FF; // BLACK RGBA888
@@ -38,7 +38,7 @@ namespace context {
 
 		const char* mRomFileName;
 		bool mKeypad[16];						// Hex keypad 0x0-0xF
-		bool mLcd[64 * 32] = { 0 };
+		bool mLcd[64 * 32] = { false };
 
 	} EmuContext;
 

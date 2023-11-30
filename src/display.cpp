@@ -35,18 +35,11 @@ namespace display {
 		return true;
 	}
 
-	void setFBColor(uint32_t rgba, int layer)
+	void setColor(int r, int g, int b, int a)
 	{
 		auto displayState = ctx->mDisplayContext;
 
-		// Bitwise to get RGBA
-		uint8_t r = (rgba >> 24) & 0xFF;
-		uint8_t g = (rgba >> 16) & 0xFF;
-		uint8_t b = (rgba >> 8) & 0xFF;
-		uint8_t a = (rgba >> 0) & 0xFF;
-
 		SDL_SetRenderDrawColor(displayState->mRenderer, r, g, b, a);
-		SDL_RenderClear(displayState->mRenderer);
 	}
 
 	void updateDisplay()
@@ -54,9 +47,32 @@ namespace display {
 		// 60hz refresh rate
 		auto displayState = ctx->mDisplayContext;
 
-		setFBColor(displayState->mBackgroundColor, BACKGROUND_LAYER);
+		setColor(0, 0, 0, 255);
+		SDL_RenderClear(displayState->mRenderer);
 
-		SDL_Delay(16);
+		setColor(255, 255, 255, 255);
+
+		SDL_Rect rect;
+		rect.w = 10;
+		rect.h = 10;
+
+		unsigned int x, y = 0;
+
+		for (int i = 0; i < 2048; i++)
+		{
+			x = (i % 64) * 10;
+			if ((i % 64 == 0) && (i != 0)) y += 10;
+
+			if (ctx->mEmuContext->mLcd[i] == true) {
+
+				rect.x = x;
+				rect.y = y;
+
+				SDL_RenderFillRect(displayState->mRenderer, &rect);
+			}
+		}
+
+
 		SDL_RenderPresent(displayState->mRenderer);
 	}
 
