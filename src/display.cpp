@@ -53,15 +53,15 @@ namespace display {
 		setColor(255, 255, 255, 255);
 
 		SDL_Rect rect;
-		rect.w = 10;
-		rect.h = 10;
+		rect.w = RESOLUTION_SCALE;
+		rect.h = RESOLUTION_SCALE;
 
 		unsigned int x, y = 0;
 
 		for (int i = 0; i < 2048; i++)
 		{
-			x = (i % 64) * 10;
-			if ((i % 64 == 0) && (i != 0)) y += 10;
+			x = (i % RESOLUTION_WIDTH) * RESOLUTION_SCALE;
+			if ((i % RESOLUTION_WIDTH == 0) && (i != 0)) y += RESOLUTION_SCALE;
 
 			if (ctx->mEmuContext->mLcd[i] == true) {
 

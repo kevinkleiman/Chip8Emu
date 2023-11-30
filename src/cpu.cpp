@@ -23,8 +23,6 @@ void CPU::Cycle()
 
 	while (emuCtx->mStatus != context::QUIT)
 	{
-		display::updateDisplay();
-		continue;
 		PollInput();
 
 		if (emuCtx->mStatus == context::PAUSED) continue;
@@ -32,6 +30,7 @@ void CPU::Cycle()
 		EmulateInstr();
 
 		// Updates SDL display, not Chip8 display render
+		display::updateDisplay();
 
 	}
 }

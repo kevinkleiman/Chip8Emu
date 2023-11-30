@@ -35,14 +35,6 @@ int main(int argc, char **argv)
     // Initialize hardware and context
     init();
 
-	for (int i = 0; i < 2048; ++i)
-	{
-		if (i > 1500)
-		{
-			ctx->mEmuContext->mLcd[i] = true;
-		}
-	}
-
     // Set up config form cli arg
     configFromArgs(argc, argv);
 
