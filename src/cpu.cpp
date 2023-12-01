@@ -26,6 +26,7 @@ void CPU::Cycle()
         PollInput();
 
         if (emuCtx->mStatus == context::PAUSED) continue;
+        SDL_Delay(16);
 
         EmulateInstr();
         
@@ -44,7 +45,7 @@ bool CPU::PollInput()
     auto emuCtx = ctx->mEmuContext;
 
     SDL_Event event;
-    memset(mKeyBuffer, 0, sizeof(mKeyBuffer));
+    mKeyBuffer[mLastKeyPress] = false;
 
     while (SDL_PollEvent(&event))
     {
@@ -109,33 +110,11 @@ void CPU::EmulateInstr()
     std::invoke(this->Chip8Instr[mInstr.opcode], this);
 }
 
-void CPU::_0x0()
-{
-    auto memory = ctx->mEmuContext->mMemory;
-
-    switch (mInstr.n) 
-    {
-        case 0x0:
-        {
-            memset(&memory->mPixelBuffer, 0, sizeof(memory->mPixelBuffer));
-            mPC += 2;
-            break;
-        }
-        case 0xE:
-        {
-            mPC = memory->mStack[mSP];
-            --mSP;
-            mPC += 2;
-            break;
-        }
-    }
-}
-
 void CPU::PushRegs()
 {
     auto memory = ctx->mEmuContext->mMemory;
 
-    for (uint8_t i = 0; i < mVRegisters[mInstr.x]; ++i)
+    for (uint8_t i = 0; i <= mVRegisters[mInstr.x]; ++i)
     {
         memory->mRam[mI + i] = mVRegisters[i];
     }
@@ -145,10 +124,32 @@ void CPU::PopRegs()
 {
     auto memory = ctx->mEmuContext->mMemory;
 
-    for (uint8_t i = 0; i < mVRegisters[mInstr.x]; ++i)
+    for (uint16_t i = 0; i <= mVRegisters[mInstr.x]; ++i)
     {
         mVRegisters[i] = memory->mRam[mI + i];
     }
+}
+
+void CPU::_0x0()
+{
+    auto memory = ctx->mEmuContext->mMemory;
+
+    switch (mInstr.n) 
+    {
+        case 0x0:
+        {
+            memset(&memory->mPixelBuffer, 0, sizeof(memory->mPixelBuffer));
+            break;
+        }
+        case 0xE:
+        {
+            mPC = memory->mStack[mSP];
+            --mSP;
+            break;
+        }
+    }
+
+    mPC += 2;
 }
 
 void CPU::_0x1()
@@ -188,7 +189,7 @@ void CPU::_0x4()
 
 void CPU::_0x5()
 {
-    if (mVRegisters[mInstr.x] != mVRegisters[mInstr.y])
+    if (mVRegisters[mInstr.x] == mVRegisters[mInstr.y])
     {
         mPC += 2;
     }
@@ -268,7 +269,7 @@ void CPU::_0x8()
         }
         case 0x6:
         {
-            if ((mVRegisters[mInstr.x] & 0b1) == 0x1)
+            if ((mVRegisters[mInstr.x] & 0x1) == 0x1)
             {
                 mVRegisters[0xF] = 0x1;
             }
@@ -300,7 +301,7 @@ void CPU::_0x8()
         }
         case 0xE:
         {
-            if ((mVRegisters[mInstr.x] & 0x80) == 0x1)
+            if ((mVRegisters[mInstr.x] & 0x80) == 0x8)
             {
                 mVRegisters[0xF] = 0x1;
             }
@@ -309,7 +310,7 @@ void CPU::_0x8()
                 mVRegisters[0xF] = 0x0;
             }
 
-            mVRegisters[mInstr.x] *= 2;
+            mVRegisters[mInstr.x] <<= 1;
             mPC += 2;
             break;
         }
@@ -405,10 +406,7 @@ void CPU::_0xF()
             bool pressed = PollInput();
 
             // Hang until key is pressed
-            while (!pressed) 
-            {
-                pressed = PollInput();
-            }
+            if (!pressed) mPC -= 2;
 
             mVRegisters[mInstr.x] = mLastKeyPress;
             break;
@@ -452,7 +450,9 @@ void CPU::_0xF()
         }
 		case 0x3:
         {
-            ctx->mEmuContext->mStatus = context::PAUSED;
+            memory->mRam[mI] = mVRegisters[mInstr.x] / 100;
+            memory->mRam[mI + 1] = (mVRegisters[mInstr.x] / 10) % 10;
+            memory->mRam[mI + 2] = (mVRegisters[mInstr.x] % 100) % 10;        
             break;
         }
     }
