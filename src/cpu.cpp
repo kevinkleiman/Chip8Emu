@@ -88,12 +88,12 @@ bool CPU::KeyPress(SDL_Keysym key)
         if (key.sym >= 48 && key.sym <= 57)
         {
             mKeyBuffer[key.sym - 48] = true;
-            mLastKeyPress = key.sym;
+            mLastKeyPress = key.sym - 48;
         }
         else if (key.sym >= 97 && key.sym <= 102)
         {
             mKeyBuffer[key.sym - 87] = true;
-            mLastKeyPress = key.sym;
+            mLastKeyPress = key.sym - 87;
         }
 
         return true;
@@ -114,7 +114,7 @@ void CPU::PushRegs()
 {
     auto memory = ctx->mEmuContext->mMemory;
 
-    for (uint8_t i = 0; i <= mVRegisters[mInstr.x]; ++i)
+    for (uint8_t i = 0; i <= mInstr.x; ++i)
     {
         memory->mRam[mI + i] = mVRegisters[i];
     }
@@ -124,7 +124,7 @@ void CPU::PopRegs()
 {
     auto memory = ctx->mEmuContext->mMemory;
 
-    for (uint16_t i = 0; i <= mVRegisters[mInstr.x]; ++i)
+    for (uint16_t i = 0; i <= mInstr.x; ++i)
     {
         mVRegisters[i] = memory->mRam[mI + i];
     }
@@ -278,7 +278,7 @@ void CPU::_0x8()
             mVRegisters[0xF] = 0x0;
         }
 
-        mVRegisters[mInstr.x] = mVRegisters[mInstr.x] / 2;
+        mVRegisters[mInstr.x] >>= 1;
         mPC += 2;
         break;
     }
@@ -382,10 +382,12 @@ void CPU::_0xE()
     case 0xE:
     {
         mPC += (mKeyBuffer[mVRegisters[mInstr.x]] == true) ? 4 : 2;
+        break;
     }
     case 0x1:
     {
         mPC += (mKeyBuffer[mVRegisters[mInstr.x]] != true) ? 4 : 2;
+        break;
     }
     }
 }
@@ -406,7 +408,7 @@ void CPU::_0xF()
         bool pressed = PollInput();
 
         // Hang until key is pressed
-        if (!pressed) mPC -= 2;
+        if (!pressed) mPC -= 4;
 
         mVRegisters[mInstr.x] = mLastKeyPress;
         break;
@@ -431,6 +433,8 @@ void CPU::_0xF()
             break;
         }
         }
+
+        break;
 
     }
     case 0x8:

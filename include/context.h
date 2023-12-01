@@ -6,6 +6,9 @@
 #include "cpu.h"
 #include "memory.h"
 
+#define PAUSE \
+    ctx->mEmuContext->mStatus = context::PAUSED;
+
 namespace context {
 
     typedef enum EmuStatus_t {
