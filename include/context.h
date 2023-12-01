@@ -17,8 +17,8 @@ namespace context {
 	
 	// Singleton for managing display state
 	typedef struct DisplayContext_t {
-		uint32_t mWindowWidth = 640;
-		uint32_t mWindowHeight = 320;
+		uint32_t mWindowWidth = 1280;
+		uint32_t mWindowHeight = 640;
 
 		uint32_t mForegroundColor = 0xFFFFFFFF;	// WHITE RGBA888
 		uint32_t mBackgroundColor = 0x000000FF; // BLACK RGBA888
