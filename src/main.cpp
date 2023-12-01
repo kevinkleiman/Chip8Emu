@@ -25,12 +25,12 @@ void init()
     ctx->mEmuContext->mCpu = std::make_shared<CPU>();
     ctx->mEmuContext->mMemory = std::make_shared<Memory>();
 
-	// Inititalize hardware and set up hardware state
-	ctx->mEmuContext->mStatus = context::RUNNING;
-	ctx->mEmuContext->mCpu->mPC = ROM_ENTRY;
+    // Inititalize hardware and set up hardware state
+    ctx->mEmuContext->mStatus = context::RUNNING;
+    ctx->mEmuContext->mCpu->mPC = ROM_ENTRY;
 }
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     // Initialize hardware and context
     init();
@@ -46,7 +46,7 @@ int main(int argc, char **argv)
     ctx->mEmuContext->mMemory->LoadRom();
 
     // Start CPU cycle
-	ctx->mEmuContext->mCpu->Cycle();
+    ctx->mEmuContext->mCpu->Cycle();
 
     // Cleanup and destroy SDL windows
     display::cleanup();

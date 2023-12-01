@@ -4,9 +4,9 @@
 
 namespace display {
 
-	bool init();
+    bool init();
 
-	void updateDisplay();
-	void setColor(int r, int g, int b, int a);
-	void cleanup();
+    void updateDisplay();
+    void setColor(int r, int g, int b, int a);
+    void cleanup();
 }
